@@ -1,0 +1,43 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+function carregarTarefas(){
+$.ajax({
+url:'/Tarefa/',
+type:'GET',
+success:function(tarefas){
+let lista = '';
+tarefas.forEach(tarefa=>{
+lista+= `
+<li class="list-group-item">
+<strong>${tarefa.nome}</strong><br>
+<small>${tarefa.descricao}</small>
+</li> `;
+});
+$('#listaTarefas').html(lista);
+}
+});
+}
+function adicionarTarefa(){
+const tarefa=
+{
+nome:$('#nomeTarefa').val(),
+descricao:$('#descricaoTarefa').val()
+};
+$.ajax({
+url:'/Tarefa/',
+type:'POST',
+contentType:'application/json',
+data:JSON.stringify(tarefa),
+success:function(){
+$('#formTarefa')[0].reset();
+carregarTarefas();
+}
+});
+}
+$(document).ready(function(){
+carregarTarefas();
+})
